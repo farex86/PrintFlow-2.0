@@ -64,6 +64,11 @@ body {
   width: 8px;
   height: 8px;
 }
+/* NEW - Fixed version */
+body {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;  /* ← Updated property name */
+}
 
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
