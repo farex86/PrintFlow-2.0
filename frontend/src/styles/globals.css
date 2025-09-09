@@ -137,8 +137,8 @@ textarea:focus {
 /* Print styles */
 @media print {
   body {
-    -webkit-print-color-adjust: exact;
-    color-adjust: exact;
+   -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;  /* ← Updated property name */
   }
 
   .no-print,
