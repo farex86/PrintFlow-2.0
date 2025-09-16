@@ -25,11 +25,11 @@ const ProjectDetails = () => {
   const { projectId } = useParams();
 
   // Fetch project by ID
-  const { data, isLoading, error } = useQuery(
-    ["project", projectId],
-    () => projectService.getById(projectId),
-    { enabled: !!projectId }
-  );
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["project", projectId],
+    queryFn: () => projectService.getById(projectId),
+    enabled: !!projectId,
+  });
 
   if (isLoading) {
     return (

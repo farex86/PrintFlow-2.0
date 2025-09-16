@@ -23,11 +23,11 @@ const TaskDetails = () => {
   const { taskId } = useParams();
 
   // Fetch task by ID
-  const { data, isLoading, error } = useQuery(
-    ["task", taskId],
-    () => taskService.getById(taskId),
-    { enabled: !!taskId }
-  );
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["task", taskId],
+    queryFn: () => taskService.getById(taskId),
+    enabled: !!taskId,
+  });
 
   if (isLoading) {
     return (

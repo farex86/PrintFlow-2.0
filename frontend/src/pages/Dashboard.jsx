@@ -37,13 +37,13 @@ const Dashboard = () => {
   const {
     data: projectsResult,
     isLoading: loadingProjects
-  } = useQuery(['projects'], projectService.getAll);
+  } = useQuery({ queryKey: ['projects'], queryFn: projectService.getAll });
 
   // Fetch tasks
   const {
     data: tasksResult,
     isLoading: loadingTasks
-  } = useQuery(['tasks'], taskService.getAll);
+  } = useQuery({ queryKey: ['tasks'], queryFn: taskService.getAll });
 
   const loading = loadingProjects || loadingTasks;
 
