@@ -24,6 +24,8 @@ import Invoices from './pages/Invoices';
 import Calendar from './pages/Calendar';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
+import OnboardingWizard from './pages/OnboardingWizard';
+import BrandProfilePage from './pages/BrandProfilePage';
 
 // Layout
 import Header from './components/common/Header';
@@ -123,6 +125,8 @@ const AppRoutes = () => {
           <Route path="calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
           <Route path="analytics" element={<ProtectedRoute roles={['admin','manager']}><Analytics /></ProtectedRoute>} />
           <Route path="settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+          <Route path="onboarding" element={<ProtectedRoute><OnboardingWizard /></ProtectedRoute>} />
+          <Route path="brand-profile" element={<ProtectedRoute><BrandProfilePage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       )}

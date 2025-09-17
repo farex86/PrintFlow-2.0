@@ -4,6 +4,7 @@ const { v2: cloudinary } = require('cloudinary');
 const router = express.Router();
 const File = require('../models/File'); // Mongoose model
 const Project = require('../models/Project');
+const { protect } = require('../middleware/auth');
 
 // Configure Cloudinary
 cloudinary.config({
@@ -26,8 +27,50 @@ const upload = multer({
   },
 });
 
+const uploadMultiple = upload.array('files', 10);
+
+// Upload multiple files for onboarding
+router.post('/upload/onboarding', protect, uploadMultiple, async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No files uploaded' });
+    }
+
+    const uploadPromises = req.files.map(file => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: 'auto', folder: 'printflow/onboarding', public_id: `${Date.now()}-${file.originalname}` },
+          (err, result) => (err ? reject(err) : resolve({ result, file }))
+        );
+        uploadStream.end(file.buffer);
+      });
+    });
+
+    const results = await Promise.all(uploadPromises);
+
+    const fileDocs = results.map(({ result, file }) => ({
+      originalName: file.originalname,
+      filename: result.public_id,
+      cloudinaryUrl: result.secure_url,
+      cloudinaryPublicId: result.public_id,
+      mimetype: file.mimetype,
+      size: file.size,
+      category: 'contract', // Or some other onboarding category
+      uploadedBy: req.user.id,
+    }));
+
+    const newFiles = await File.insertMany(fileDocs);
+
+    res.status(201).json({ success: true, data: newFiles });
+  } catch (error) {
+    console.error('Onboarding file upload error:', error);
+    res.status(500).json({ message: 'File upload failed' });
+  }
+});
+
+
 // Upload single file
-router.post('/upload', upload.single('file'), async (req, res) => {
+router.post('/upload', protect, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
