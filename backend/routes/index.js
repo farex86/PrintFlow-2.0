@@ -14,6 +14,8 @@ const notificationRoutes = require('./notifications');
 const dashboardRoutes = require('./dashboard');
 const estimatorRoutes = require('./estimator');
 const paymentRoutes = require('./payments');
+const onboardingRoutes = require('./onboarding');
+const brandProfileRoutes = require('./brandProfile');
 
 // Define routes
 router.use('/auth', authRoutes);
@@ -26,6 +28,8 @@ router.use('/notifications', notificationRoutes);
 router.use('/dashboard', dashboardRoutes);
 router.use('/estimator', estimatorRoutes);
 router.use('/payments', paymentRoutes);
+router.use('/onboarding', onboardingRoutes);
+router.use('/brand-profile', brandProfileRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import onboardingService from '../services/onboardingService';
 import { Box, Card, CardContent, Typography, TextField, Button, CircularProgress, Alert } from '@mui/material';
 import { motion } from 'framer-motion';
 
@@ -40,7 +41,8 @@ const Register = () => {
       });
 
       if (res.success) {
-        navigate('/dashboard');
+        await onboardingService.start();
+        navigate('/onboarding');
       } else {
         setError(res.message || 'Registration failed');
       }
